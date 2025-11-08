@@ -86,8 +86,10 @@ export default function LocationGallery({
             <button
               key={idx}
               onClick={() => setCurrentImage(idx)}
-              className={`relative aspect-square rounded-xl overflow-hidden hover-elevate transition-all ${
-                currentImage === idx ? 'ring-4 ring-primary' : ''
+              className={`relative aspect-square rounded-xl overflow-hidden transition-all ${
+                currentImage === idx 
+                  ? 'ring-4 ring-pink-500 scale-105' 
+                  : 'hover:scale-105 hover:ring-2 hover:ring-pink-300'
               }`}
               data-testid={`button-thumbnail-${idx}`}
             >
