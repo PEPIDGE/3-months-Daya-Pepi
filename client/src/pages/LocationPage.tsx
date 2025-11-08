@@ -47,7 +47,7 @@ export default function LocationPage() {
         additionalContent={
           <>
             {location === 'sozopol' && (
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/10 dark:to-red-900/10 rounded-2xl p-8 mb-8">
+              <div className="bg-gradient-to-br from-pink-100 via-rose-50 to-amber-50 dark:from-pink-900/30 dark:via-rose-900/30 dark:to-amber-900/30 rounded-2xl p-8 mb-8 shadow-lg">
                 <h3 className="font-serif text-2xl font-bold mb-4">Street Place бургерите</h3>
                 <p className="text-lg leading-relaxed">
                   Бургерите на Street Place в Созопол бяха нещо специално – сочни, вкусни и перфектни след дълъг ден на плажа. 

@@ -7,7 +7,6 @@ interface StoryProps {
   text: string;
   hiddenWord: string;
   hiddenLink: string;
-  gradient: string;
 }
 
 export default function StorySection({ 
@@ -16,8 +15,7 @@ export default function StorySection({
   date, 
   text, 
   hiddenWord, 
-  hiddenLink,
-  gradient 
+  hiddenLink
 }: StoryProps) {
   const handleWordClick = () => {
     const locationKey = hiddenLink.replace('/location/', '');
@@ -28,10 +26,7 @@ export default function StorySection({
   const parts = text.split(hiddenWord);
   
   return (
-    <div 
-      className={`relative overflow-hidden rounded-2xl p-8 md:p-12 ${gradient} bg-300% animate-gradient-shift`}
-      style={{ backgroundSize: '300% 300%' }}
-    >
+    <div className="relative overflow-hidden rounded-2xl p-8 md:p-12 bg-gradient-to-br from-pink-100 via-rose-50 to-amber-50 dark:from-pink-900/30 dark:via-rose-900/30 dark:to-amber-900/30 shadow-lg">
       <div className="relative z-10">
         <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
           {title}
@@ -55,7 +50,7 @@ export default function StorySection({
             onClick={handleWordClick}
             data-testid={`link-hidden-${hiddenLink.replace('/location/', '')}`}
           >
-            <span className="font-semibold underline decoration-2 decoration-primary hover:text-primary transition-colors duration-300 hover-elevate px-1 rounded">
+            <span className="transition-all duration-300 hover:text-primary hover:font-semibold hover:underline decoration-2 decoration-primary cursor-pointer">
               {hiddenWord}
             </span>
           </Link>

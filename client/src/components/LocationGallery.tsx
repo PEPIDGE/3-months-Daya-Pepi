@@ -31,8 +31,8 @@ export default function LocationGallery({
           {locationName}
         </h1>
 
-        <div className="mb-12 relative group">
-          <div className="relative aspect-video bg-gradient-to-br from-pink-100 to-rose-100 dark:from-pink-900/20 dark:to-rose-900/20 rounded-2xl overflow-hidden">
+        <div className="mb-12">
+          <div className="relative aspect-video bg-gradient-to-br from-pink-100 via-rose-50 to-amber-50 dark:from-pink-900/30 dark:via-rose-900/30 dark:to-amber-900/30 rounded-2xl overflow-hidden shadow-xl">
             <img
               src={images[currentImage]}
               alt={`${locationName} ${currentImage + 1}`}
@@ -41,39 +41,43 @@ export default function LocationGallery({
             />
           </div>
           
-          <Button
-            variant="secondary"
-            size="icon"
-            className="absolute left-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
-            onClick={prevImage}
-            data-testid="button-prev-image"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </Button>
-          
-          <Button
-            variant="secondary"
-            size="icon"
-            className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"
-            onClick={nextImage}
-            data-testid="button-next-image"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </Button>
+          <div className="flex items-center justify-center gap-4 mt-6">
+            <Button
+              variant="default"
+              size="lg"
+              className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
+              onClick={prevImage}
+              data-testid="button-prev-image"
+            >
+              <ChevronLeft className="w-5 h-5 mr-2" />
+              Предишна
+            </Button>
+            
+            <div className="flex gap-2">
+              {images.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentImage(idx)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    idx === currentImage 
+                      ? 'bg-primary scale-125' 
+                      : 'bg-gray-300 dark:bg-gray-600 hover:bg-primary/50'
+                  }`}
+                  data-testid={`button-image-indicator-${idx}`}
+                />
+              ))}
+            </div>
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-            {images.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentImage(idx)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  idx === currentImage 
-                    ? 'bg-primary w-8' 
-                    : 'bg-white/50 hover:bg-white/75'
-                }`}
-                data-testid={`button-image-indicator-${idx}`}
-              />
-            ))}
+            <Button
+              variant="default"
+              size="lg"
+              className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
+              onClick={nextImage}
+              data-testid="button-next-image"
+            >
+              Следваща
+              <ChevronRight className="w-5 h-5 ml-2" />
+            </Button>
           </div>
         </div>
 
