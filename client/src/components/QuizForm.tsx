@@ -35,6 +35,7 @@ const questions: Question[] = [
 export default function QuizForm() {
   const [, setLocation] = useLocation();
   const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [coordinates, setCoordinates] = useState<{ lat: string; lng: string }>({ lat: '', lng: '' });
   const [validated, setValidated] = useState<Record<number, boolean>>({});
   const [allCorrect, setAllCorrect] = useState(false);
 
@@ -66,7 +67,14 @@ export default function QuizForm() {
     let correctCount = 0;
 
     questions.forEach(q => {
-      const isCorrect = checkAnswer(q.id, answers[q.id] || '');
+      let isCorrect = false;
+      if (q.type === 'coordinates') {
+        // Combine coordinates for validation
+        const coordAnswer = `${coordinates.lat}, ${coordinates.lng}`;
+        isCorrect = checkAnswer(q.id, coordAnswer);
+      } else {
+        isCorrect = checkAnswer(q.id, answers[q.id] || '');
+      }
       newValidated[q.id] = isCorrect;
       if (isCorrect) correctCount++;
     });
@@ -110,7 +118,32 @@ export default function QuizForm() {
                 )}
               </Label>
 
-              {q.type === 'select' && q.options ? (
+              {q.type === 'coordinates' ? (
+                <div className="flex gap-3 mt-2">
+                  <div className="flex-1">
+                    <Label className="text-sm text-muted-foreground mb-1">Ширина (latitude)</Label>
+                    <Input
+                      type="text"
+                      value={coordinates.lat}
+                      onChange={(e) => setCoordinates({ ...coordinates, lat: e.target.value })}
+                      placeholder="42.65952"
+                      data-testid="input-coordinate-lat"
+                      className="text-center font-mono"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <Label className="text-sm text-muted-foreground mb-1">Дължина (longitude)</Label>
+                    <Input
+                      type="text"
+                      value={coordinates.lng}
+                      onChange={(e) => setCoordinates({ ...coordinates, lng: e.target.value })}
+                      placeholder="27.72586"
+                      data-testid="input-coordinate-lng"
+                      className="text-center font-mono"
+                    />
+                  </div>
+                </div>
+              ) : q.type === 'select' && q.options ? (
                 <Select
                   value={answers[q.id] || ''}
                   onValueChange={(value) => setAnswers({ ...answers, [q.id]: value.toLowerCase() })}
