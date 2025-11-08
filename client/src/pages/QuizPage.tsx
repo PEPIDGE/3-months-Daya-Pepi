@@ -7,6 +7,9 @@ export default function QuizPage() {
   const [, setLocation] = useLocation();
 
   useEffect(() => {
+    // Scroll to top when quiz page loads
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     const locations = ['nesebare', 'sozopol', 'sofia', 'varna', 'bansko', 'pleven'];
     const allUnlocked = locations.every(loc => localStorage.getItem(loc) === 'unlocked');
     

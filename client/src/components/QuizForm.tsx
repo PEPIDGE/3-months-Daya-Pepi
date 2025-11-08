@@ -84,83 +84,85 @@ export default function QuizForm() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {questions.map((q) => (
-          <div
-            key={q.id}
-            className={`bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-900/10 dark:to-rose-900/10 rounded-xl p-6 ${
-              validated[q.id] !== undefined
-                ? validated[q.id]
-                  ? 'ring-2 ring-green-500'
-                  : 'ring-2 ring-red-500'
-                : ''
-            }`}
-          >
-            <Label className="text-base font-semibold mb-3 flex items-center gap-2">
-              <span className="text-primary">{q.id}.</span>
-              {q.question}
-              {validated[q.id] !== undefined && (
-                validated[q.id] ? (
-                  <CheckCircle className="w-5 h-5 text-green-500 ml-auto" />
-                ) : (
-                  <XCircle className="w-5 h-5 text-red-500 ml-auto" />
-                )
-              )}
-            </Label>
+    <div className="max-w-4xl mx-auto">
+      <div className="bg-gradient-to-br from-pink-100 via-rose-50 to-amber-50 dark:from-pink-900/30 dark:via-rose-900/30 dark:to-amber-900/30 rounded-3xl p-8 md:p-12 shadow-2xl">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {questions.map((q) => (
+            <div
+              key={q.id}
+              className={`bg-white/60 dark:bg-gray-900/40 rounded-xl p-6 transition-all ${
+                validated[q.id] !== undefined
+                  ? validated[q.id]
+                    ? 'ring-2 ring-green-500 shadow-lg'
+                    : 'ring-2 ring-red-500 shadow-lg'
+                  : 'hover:shadow-md'
+              }`}
+            >
+              <Label className="text-base font-semibold mb-3 flex items-center gap-2">
+                <span className="text-primary text-lg">{q.id}.</span>
+                <span className="flex-1">{q.question}</span>
+                {validated[q.id] !== undefined && (
+                  validated[q.id] ? (
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                  ) : (
+                    <XCircle className="w-5 h-5 text-red-500" />
+                  )
+                )}
+              </Label>
 
-            {q.type === 'select' && q.options ? (
-              <Select
-                value={answers[q.id] || ''}
-                onValueChange={(value) => setAnswers({ ...answers, [q.id]: value.toLowerCase() })}
+              {q.type === 'select' && q.options ? (
+                <Select
+                  value={answers[q.id] || ''}
+                  onValueChange={(value) => setAnswers({ ...answers, [q.id]: value.toLowerCase() })}
+                >
+                  <SelectTrigger data-testid={`select-question-${q.id}`}>
+                    <SelectValue placeholder="Избери отговор..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {q.options.map((opt) => (
+                      <SelectItem key={opt} value={opt.toLowerCase()}>
+                        {opt}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Input
+                  type="text"
+                  value={answers[q.id] || ''}
+                  onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
+                  placeholder="Твоят отговор..."
+                  data-testid={`input-question-${q.id}`}
+                  className="mt-2"
+                />
+              )}
+            </div>
+          ))}
+
+          <div className="flex justify-center gap-4 pt-8">
+            {!allCorrect ? (
+              <Button
+                type="submit"
+                size="lg"
+                className="h-14 px-12 text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-xl"
+                data-testid="button-submit-quiz"
               >
-                <SelectTrigger data-testid={`select-question-${q.id}`}>
-                  <SelectValue placeholder="Избери отговор..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {q.options.map((opt) => (
-                    <SelectItem key={opt} value={opt.toLowerCase()}>
-                      {opt}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                Провери отговорите
+              </Button>
             ) : (
-              <Input
-                type="text"
-                value={answers[q.id] || ''}
-                onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
-                placeholder="Твоят отговор..."
-                data-testid={`input-question-${q.id}`}
-                className="mt-2"
-              />
+              <Button
+                type="button"
+                size="lg"
+                onClick={handleContinue}
+                className="h-14 px-12 text-lg bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-xl animate-pulse"
+                data-testid="button-continue-to-secret"
+              >
+                Продължи
+              </Button>
             )}
           </div>
-        ))}
-
-        <div className="flex justify-center gap-4 pt-6">
-          {!allCorrect ? (
-            <Button
-              type="submit"
-              size="lg"
-              className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
-              data-testid="button-submit-quiz"
-            >
-              Провери отговорите
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              size="lg"
-              onClick={handleContinue}
-              className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
-              data-testid="button-continue-to-secret"
-            >
-              Продължи
-            </Button>
-          )}
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
